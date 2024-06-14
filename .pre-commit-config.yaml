@@ -1,0 +1,23 @@
+# ref. https://pre-commit.com/#plugins
+
+# 特定のhookでエラーが発生した時点でエラー終了
+fail_fast: true
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: check-json
+      - id: check-toml
+      - id: check-yaml
+
+  # trivy
+  - repo: local
+    hooks:
+      # 脆弱性DBのアップデートなどが発生する場合、チェックに時間がかかるので必要に応じてCIに任せる
+      # ただしその場合でもsecretスキャンだけはローカルで行うべき
+      - id: trivy
+        name: run trivy
+        entry: ./scripts/trivy.sh
+        language: system

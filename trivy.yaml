@@ -17,6 +17,7 @@ scan:
     - license
 
 # License Options #
+# 新しいライセンスの警告が表示された場合、必ずそのライセンス条文を確認した上で可能ならばignoreを設定
 license:
   ignored:
     - MIT

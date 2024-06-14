@@ -29,6 +29,14 @@ $ sdk install maven
 $ mvn --version
 ```
 
+その他にもこのプロジェクトでは以下のツールを利用しています。
+
+- [pre-commit](https://pre-commit.com/#install) v3.7.0
+- [Trivy](https://aquasecurity.github.io/trivy/latest/getting-started/installation/) v0.51.1
+
+各ツールのインストール手順は公式ドキュメントあるいはブログの各ツールの関連[記事](https://zenn.dev/erueru_tech)
+を参考にしてください。
+
 ## 免責事項
 
 このリポジトリ内のあらゆるソースコードの利用によって不利益を被った場合におきましても、その不利益に関して一切の責任を負いかねます。

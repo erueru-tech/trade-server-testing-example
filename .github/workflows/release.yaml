@@ -1,20 +1,28 @@
 name: release
 
 on:
-  # PRがクローズされた際に実行(ジョブ側のif条件との組み合わせで、PRマージのタイミングでのみ実行される)
-  pull_request:
-    branches:
-      - main
-    types: [ closed ]
+  #  pull_request:
+  #    branches:
+  #      - main
+  #    types: [ opened, synchronize ]
+  workflow_dispatch:
+#    inputs:
+#      releaseVersion:
+#        description: "Default version to use when preparing a release."
+#        required: true
+#        default: "X.Y.Z"
+#      developmentVersion:
+#        description: "Default version to use for new local working copy."
+#        required: true
+#        default: "X.Y.Z-SNAPSHOT"
 
-# すべてのアクセス許可を無効に設定
 permissions: { }
 
+env:
+  JAVA_VERSION: 21
+
 jobs:
-  # PRマージが行われたタイミングでstaging環境へterraform applyを実行
-  # なお'== true'を消したくなるが、思わぬ挙動に遭遇するケースがあるので慣例に従った方がいい
   main:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-22.04
     permissions:
       contents: write
@@ -23,6 +31,23 @@ jobs:
       - name: checkout project
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
 
+      - name: install java
+        uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9
+        with:
+          distribution: "temurin"
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: "maven"
+          server-id: github
+
+      - name: configure git user
+        run: |
+          git config user.email ${{ secrets.GH_USER_EMAIL }}
+          git config user.name ${{ secrets.GH_USER_NAME }}
+
+      - name: maven release
+        run: |
+          # -DreleaseVersion=${{ github.event.inputs.releaseVersion }} -DdevelopmentVersion=${{ github.event.inputs.developmentVersion }}
+          mvn -B -DskipTests=true release:prepare release:perform
 
   slack:
     if: always() && github.event.pull_request.merged == true
@@ -34,7 +59,6 @@ jobs:
       - name: checkout project
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
 
-      # ワークフローの実行結果をSlackの指定したチャネルに通知
       - name: send the workflow result to the slack channel
         uses: ./.github/actions/slack
         with:

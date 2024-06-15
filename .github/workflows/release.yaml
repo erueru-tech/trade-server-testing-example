@@ -1,0 +1,44 @@
+name: release
+
+on:
+  # PRがクローズされた際に実行(ジョブ側のif条件との組み合わせで、PRマージのタイミングでのみ実行される)
+  pull_request:
+    branches:
+      - main
+    types: [ closed ]
+
+# すべてのアクセス許可を無効に設定
+permissions: { }
+
+jobs:
+  # PRマージが行われたタイミングでstaging環境へterraform applyを実行
+  # なお'== true'を消したくなるが、思わぬ挙動に遭遇するケースがあるので慣例に従った方がいい
+  main:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: checkout project
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+
+
+  slack:
+    if: always() && github.event.pull_request.merged == true
+    runs-on: ubuntu-22.04
+    needs: main
+    permissions:
+      contents: read
+    steps:
+      - name: checkout project
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+
+      # ワークフローの実行結果をSlackの指定したチャネルに通知
+      - name: send the workflow result to the slack channel
+        uses: ./.github/actions/slack
+        with:
+          conclusion: ${{ needs.main.result }}
+          channel_id: ${{ vars.SLACK_CHANNEL_ID }}
+          webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+

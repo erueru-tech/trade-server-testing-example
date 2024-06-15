@@ -12,6 +12,15 @@ repos:
       - id: check-toml
       - id: check-yaml
 
+  # java
+  - repo: local
+    hooks:
+      - id: fmt
+        name: run format
+        entry: ./scripts/fmt.sh
+        language: system
+        files: (\.java)$
+
   # trivy
   - repo: local
     hooks:

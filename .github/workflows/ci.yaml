@@ -31,7 +31,6 @@ jobs:
         with:
           distribution: "temurin"
           java-version: ${{ env.JAVA_VERSION }}
-          cache: "maven"
 
       # Javaコードのフォーマットチェックを実行
       - name: run java fmt

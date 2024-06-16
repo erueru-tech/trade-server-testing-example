@@ -2,6 +2,10 @@ name: release
 
 on:
   workflow_dispatch:
+    inputs:
+      release_version:
+        description: "release version"
+        required: true
 
 permissions: { }
 
@@ -23,7 +27,6 @@ jobs:
         with:
           distribution: "temurin"
           java-version: ${{ env.JAVA_VERSION }}
-          cache: "maven"
 
       - name: configure git user
         run: |
@@ -32,7 +35,7 @@ jobs:
 
       - name: release
         run: |
-          mvn -B -DskipTests=true release:prepare release:perform
+          mvn -B -DskipTests=true -DreleaseVersion=${{ inputs.release_version }} release:prepare release:perform
 
   slack:
     if: always() && github.event.pull_request.merged == true

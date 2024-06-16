@@ -1,20 +1,7 @@
 name: release
 
 on:
-  #  pull_request:
-  #    branches:
-  #      - main
-  #    types: [ opened, synchronize ]
   workflow_dispatch:
-#    inputs:
-#      releaseVersion:
-#        description: "Default version to use when preparing a release."
-#        required: true
-#        default: "X.Y.Z"
-#      developmentVersion:
-#        description: "Default version to use for new local working copy."
-#        required: true
-#        default: "X.Y.Z-SNAPSHOT"
 
 permissions: { }
 
@@ -37,16 +24,14 @@ jobs:
           distribution: "temurin"
           java-version: ${{ env.JAVA_VERSION }}
           cache: "maven"
-          server-id: github
 
       - name: configure git user
         run: |
           git config user.email ${{ secrets.GH_USER_EMAIL }}
           git config user.name ${{ secrets.GH_USER_NAME }}
 
-      - name: maven release
+      - name: release
         run: |
-          # -DreleaseVersion=${{ github.event.inputs.releaseVersion }} -DdevelopmentVersion=${{ github.event.inputs.developmentVersion }}
           mvn -B -DskipTests=true release:prepare release:perform
 
   slack:

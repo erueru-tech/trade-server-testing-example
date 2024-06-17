@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.tech.erueru</groupId>
   <artifactId>trade</artifactId>
-  <version>0.1.1</version>
+  <version>0.1.2-SNAPSHOT</version>
   <name>trade-server-testing-example</name>
 
   <parent>
@@ -21,7 +21,7 @@
 
   <scm>
     <developerConnection>scm:git:https://github.com/erueru-tech/trade-server-testing-example.git</developerConnection>
-    <tag>v0.1.1</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <dependencies>

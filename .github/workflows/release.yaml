@@ -37,6 +37,16 @@ jobs:
         run: |
           mvn -B -DskipTests=true -DreleaseVersion=${{ inputs.release_version }} release:prepare release:perform
 
+      # v6.0.0 ref. https://github.com/release-drafter/release-drafter/releases/tag/v6.0.0
+      - name: generate release note and create version tag
+        uses: release-drafter/release-drafter@3f0f87098bd6b5c5b9a36d49c41d998ea58f9348
+        with:
+          tag: ${{ inputs.release_version }}
+          version: ${{ inputs.release_version }}
+          publish: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   slack:
     if: always() && github.event.pull_request.merged == true
     runs-on: ubuntu-22.04

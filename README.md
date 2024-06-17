@@ -27,6 +27,9 @@ $ java --version
 
 $ sdk install maven
 $ mvn --version
+
+# .sdkmanrcファイルが作成されて、このプロジェクトで使用するSDKが21.0.3-temに固定される
+$ sdk env init
 ```
 
 その他にもこのプロジェクトでは以下のツールを利用しています。

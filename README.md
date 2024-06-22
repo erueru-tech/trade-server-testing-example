@@ -30,6 +30,16 @@ $ mvn --version
 
 # .sdkmanrcファイルが作成されて、このプロジェクトで使用するSDKが21.0.3-temに固定される
 $ sdk env init
+
+# プロジェクトルートに移動した時にJDKを自動で切り替えるための設定
+$ vi ~/.sdkman/etc/config
+# 以下の設定をtrueに設定
+...
+sdkman_auto_env=false
+...
+
+# 設定変更を反映
+$ source ~/.bash_profile
 ```
 
 その他にもこのプロジェクトでは以下のツールを利用しています。

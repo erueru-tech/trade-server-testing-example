@@ -1,0 +1,5 @@
+#!/bin/bash
+
+set -eu
+
+docker exec -it mysql mysql -uerueru_tech -ppassword trade

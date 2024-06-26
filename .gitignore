@@ -24,6 +24,7 @@ hs_err_pid*
 replay_pid*
 
 # The settings below are defined by erueru-tech.
+.DS_store
 .idea
 target
 release.properties
